@@ -420,6 +420,7 @@ class Yolact(nn.Module):
 
             if cfg.mask_proto_bias:
                 cfg.mask_dim += 1
+                print ("ok!")
 
 
         self.selected_layers = cfg.backbone.selected_layers
