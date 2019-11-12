@@ -51,9 +51,9 @@ def parse_args(argv=None):
                         help='Whether to use a faster, but not entirely correct version of NMS.')
     parser.add_argument('--display_masks', default=True, type=str2bool,
                         help='Whether or not to display masks over bounding boxes')
-    parser.add_argument('--display_bboxes', default=True, type=str2bool,
+    parser.add_argument('--display_bboxes', default=False, type=str2bool,
                         help='Whether or not to display bboxes around masks')
-    parser.add_argument('--display_text', default=True, type=str2bool,
+    parser.add_argument('--display_text', default=False, type=str2bool,
                         help='Whether or not to display text (class [score])')
     parser.add_argument('--display_scores', default=True, type=str2bool,
                         help='Whether or not to display scores in addition to classes')
@@ -149,6 +149,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         classes, scores, boxes = [x[:args.top_k].cpu().numpy() for x in t[:3]]
 
     num_dets_to_consider = min(args.top_k, classes.shape[0])
+
     for j in range(num_dets_to_consider):
         if scores[j] < args.score_threshold:
             num_dets_to_consider = j
@@ -163,7 +164,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
     def get_color(j, on_gpu=None):
         global color_cache
         color_idx = (classes[j] * 5 if class_color else j * 5) % len(COLORS)
-        
+
         if on_gpu is not None and color_idx in color_cache[on_gpu]:
             return color_cache[on_gpu][color_idx]
         else:
@@ -209,6 +210,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         for j in reversed(range(num_dets_to_consider)):
             x1, y1, x2, y2 = boxes[j, :]
             color = get_color(j)
+            # color = (0,0,0)
             score = scores[j]
 
             if args.display_bboxes:
@@ -562,6 +564,7 @@ def evalimage(net:Yolact, path:str, save_path:str=None):
     batch = FastBaseTransform()(frame.unsqueeze(0))
     preds = net(batch)
 
+    frame = torch.zeros(cv2.imread(path).shape).cuda().float()
     img_numpy = prep_display(preds, frame, None, None, undo_transform=False)
     
     if save_path is None:

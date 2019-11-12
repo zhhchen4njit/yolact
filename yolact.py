@@ -496,11 +496,11 @@ class Yolact(nn.Module):
         for name, module in self.named_modules():
             # See issue #127 for why we need such a complicated condition if the module is a WeakScriptModuleProxy
             # Note that this might break with future pytorch updates, so let me know if it does
-            is_script_conv = isinstance(module, torch.jit.WeakScriptModuleProxy) \
-                and all_in(module.__dict__['_constants_set'], conv_constants) \
-                and all_in(conv_constants, module.__dict__['_constants_set'])
+            # is_script_conv = isinstance(module, torch.jit.WeakScriptModuleProxy) \
+            #     and all_in(module.__dict__['_constants_set'], conv_constants) \
+            #     and all_in(conv_constants, module.__dict__['_constants_set'])
             
-            is_conv_layer = isinstance(module, nn.Conv2d) or is_script_conv
+            is_conv_layer = isinstance(module, nn.Conv2d) #or is_script_conv
             
             if is_conv_layer and module not in self.backbone.backbone_modules:
                 nn.init.xavier_uniform_(module.weight.data)

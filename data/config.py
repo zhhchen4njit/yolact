@@ -127,11 +127,11 @@ dataset_base = Config({
 sidewalk_dataset = dataset_base.copy({
     'name': 'sidewalk_Dataset',
 
-    'train_images': 'D:/2019/njit learning/201909/sidewalk extract/czhSidewalkExtract/train/sidewalk_train_data/',
-    'train_info':   'D:/2019/njit learning/201909/sidewalk extract/czhSidewalkExtract/train/sidewalk_annotations/sidewalk.json',
+    'train_images': 'D:\\sidewalk\\yolact\\data\\train\\sidewalk_train_data',
+    'train_info':   'D:\\sidewalk\\yolact\\data\\train\\sidewalk_annotations\\sidewalk.json',
 
-    'valid_images': 'D:/2019/njit learning/201909/sidewalk extract/czhSidewalkExtract/val/images/',
-    'valid_info':   'D:/2019/njit learning/201909/sidewalk extract/czhSidewalkExtract/val/label/sidewalk_val.json',
+    'valid_images': 'D:\\sidewalk\\yolact\\data\\val\\images',
+    'valid_info':   'D:\\sidewalk\\yolact\\data\\val\\label\\sidewalk_val.json',
 
     'has_gt': True,
     'class_names': ('sidewalk')
